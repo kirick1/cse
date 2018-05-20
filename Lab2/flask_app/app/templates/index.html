@@ -13,6 +13,9 @@
             </div>
         </div>
     </nav>
+    <div class="d-flex justify-content-center align-items-center ml-5 mr-5">
+        <canvas id="users-chart" width="400" height="200"></canvas>
+    </div>
     <div class="container mb-5">
         <div class="list-group ml-5 mr-5">
             {% for user in users %}
@@ -21,9 +24,54 @@
                         <h5 title="Username">{{ user.user_name }}</h5>
                         <span class="badge badge-primary" title="Rating">{{ user.rating }}</span>
                     </div>
-                    <small title="Rang">{{ user.rang }}</small>
+                    <div class="d-flex justify-content-between align-items-center w-100">
+                        <small title="Rang">{{ user.rang }}</small>
+                        {% if user.messages[0] != '' %}
+                            <span class="badge badge-success" title="Messages count">{{ user.messages|length }}</span>
+                            <span class="badge badge-warning" title="User rating" style="display: none;">{{ user.rating }}</span>
+                        {% endif %}
+                    </div>
                 </a>
             {% endfor %}
         </div>
     </div>
+    <script type="text/javascript">
+        function compare (a, b) {
+            if (a.rating < b.rating) return -1;
+            if (a.rating > b.rating) return 1;
+            return 0;
+        }
+        function getUsersMessagesFromData (users) {
+            var messages = [];
+            users.forEach(user => messages.push(user.messages));
+            return messages;
+        }
+        function getUsersRatingFromData (users) {
+            var rating = [];
+            users.forEach(user => rating.push(user.rating));
+            return rating;
+        }
+        window.onload = () => {
+            var ctx = document.getElementById('users-chart');
+            var usersData = [];
+            var messageCounters = document.getElementsByClassName('badge badge-success');
+            var ratingCounters = document.getElementsByClassName('badge badge-warning');
+            var messageCountersLength = messageCounters.length;
+            for (var i = 0; i < messageCountersLength; i++) usersData.push({ rating: parseInt(ratingCounters[i].innerText), messages: parseInt(messageCounters[i].innerText) });
+            usersData = usersData.sort(compare);
+            console.log(usersData);
+            var config = {
+                type: 'line',
+                data: { labels: getUsersRatingFromData(usersData), datasets: [{ label: 'Messages', data: getUsersMessagesFromData(usersData) }] },
+                options: {
+                    responsive: true,
+                    title: { display: true, text: 'Users rating and messages count' },
+                    tooltips: { mode: 'index', intersect: false },
+                    hover: { mode: 'nearest', intersect: true },
+                    scales: { xAxes: [{ display: true, scaleLabel: { display: true, labelString: 'Rating' } }],  yAxes: [{ display: true, scaleLabel: { display: true, labelString: 'Messages' } }] }
+                }
+            };
+            var usersChart = new Chart(ctx, config);
+        }
+    </script>
 {% endblock %}
