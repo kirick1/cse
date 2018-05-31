@@ -1,5 +1,5 @@
 import Lab1.parser.counter as counter
-import Lab1.parser.xml as xml
+import Lab1.parser.words as xml
 import Lab1.parser.request as request
 import os
 

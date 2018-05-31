@@ -13,8 +13,7 @@ mongo = PyMongo(app)
 
 @app.route("/")
 def index():
-    users = list(mongo.db.user.find())
-    users.sort(key=lambda user: user['rating'], reverse=True)
+    users = mongo.db.user.find().sort('rating', -1)
     return render_template('index.html', users=users)
 
 

@@ -1,7 +1,7 @@
 import hunspell
 import os
 
-dictionary_paths = ['Lab1/file_reader/dictionaries/Ukrainian_uk_UA.dic', 'Lab1/file_reader/dictionaries/Ukrainian_uk_UA.aff']
+dictionary_paths = ['Lab1/parser/dictionaries/Ukrainian_uk_UA.dic', 'Lab1/parser/dictionaries/Ukrainian_uk_UA.aff']
 print(list(map(lambda path: os.path.join(os.getcwd(), path), dictionary_paths)))
 
 

@@ -13,9 +13,7 @@
             </div>
         </div>
     </nav>
-    <div class="d-flex justify-content-center align-items-center ml-5 mr-5">
-        <canvas id="users-chart" width="400" height="200"></canvas>
-    </div>
+    <div class="d-flex justify-content-center align-items-center ml-5 mr-5"><canvas id="users-chart"></canvas></div>
     <div class="container mb-5">
         <div class="list-group ml-5 mr-5">
             {% for user in users %}
@@ -36,11 +34,6 @@
         </div>
     </div>
     <script type="text/javascript">
-        function compare (a, b) {
-            if (a.rating < b.rating) return -1;
-            if (a.rating > b.rating) return 1;
-            return 0;
-        }
         function getUsersMessagesFromData (users) {
             var messages = [];
             users.forEach(user => messages.push(user.messages));
