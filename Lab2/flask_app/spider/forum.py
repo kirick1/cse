@@ -1,12 +1,8 @@
-# from os.path import dirname, join
-# from dotenv import get_key
 from settings import MONGO_URI
 import scrapy
 import re
 
 from scrapy import Selector
-
-# dotenv_path = join(dirname(__file__), '..', '.env')
 
 XPATH_TOPICS = "//ol[@class='nodeList']//div[contains(@class, 'primaryContent')]//h3[@class='nodeTitle']/a/@href"
 XPATH_THREADS = "//*[contains(@class, 'discussionListItems')]//h3/a[@class='PreviewTooltip']/@href"
@@ -20,8 +16,8 @@ XPATH_USER_MESSAGES_COUNT = "//div[@class='extraUserInfo']/dl[2]/dd[1]/span/text
 XPATH_NEXT = '//div[@class="PageNav"]/nav/a[last()]/@href'
 USER_ID_REGEX = '.([0-9]+)/$'
 HEADERS = {
-    'User-Agent': "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.78 Safari/537.36"}
-
+    'User-Agent': "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.78 Safari/537.36"
+}
 name = "posts"
 base_url = 'http://avtoved.guru/forums/'
 
