@@ -6,6 +6,7 @@ import subprocess
 
 dotenv_path = join(dirname(__file__), '..', '.env')
 
+
 app = Flask(__name__)
 app.config['MONGO_URI'] = get_key(dotenv_path, 'MONGO_URI')
 mongo = PyMongo(app)
@@ -13,14 +14,13 @@ mongo = PyMongo(app)
 
 @app.route("/")
 def index():
-    users = mongo.db.user.find()
+    users = list(mongo.db.user.find())
     return render_template('index.html', users=users)
 
 
 @app.route("/<user_name>")
 def user_profile(user_name):
     user = mongo.db.user.find_one_or_404({'user_name': user_name})
-    print(user)
     return render_template('user.html', user=user)
 
 
@@ -30,5 +30,5 @@ def refresh():
     return redirect('/')
 
 
-if __name__ == "main":
+if __name__ == "__main__":
     app.run(debug=True)
