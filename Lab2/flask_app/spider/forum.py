@@ -1,11 +1,12 @@
-from os.path import dirname, join
-from dotenv import get_key
+# from os.path import dirname, join
+# from dotenv import get_key
+from settings import MONGO_URI
 import scrapy
 import re
 
 from scrapy import Selector
 
-dotenv_path = join(dirname(__file__), '..', '.env')
+# dotenv_path = join(dirname(__file__), '..', '.env')
 
 XPATH_TOPICS = "//ol[@class='nodeList']//div[contains(@class, 'primaryContent')]//h3[@class='nodeTitle']/a/@href"
 XPATH_THREADS = "//*[contains(@class, 'discussionListItems')]//h3/a[@class='PreviewTooltip']/@href"
@@ -33,7 +34,7 @@ class ForumSpider(scrapy.Spider):
         'ITEM_PIPELINES': {
             'spider.pipelines.MongoPipeline': 300,
         },
-        'MONGO_URI': get_key(dotenv_path, 'MONGO_URI'),
+        'MONGO_URI': MONGO_URI,
         'MONGO_DATABASE': 'python-lab-2'
     }
 

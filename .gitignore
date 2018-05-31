@@ -1,4 +1,8 @@
 /.idea/
 /.coverage
-/Lab2/__pycache__
 /Lab2/.env
+/Lab2/flask_app/settings.py
+/Lab2/flask_app/.env
+/Lab2/__pycache__
+/Lab2/flask_app/__pycache__/
+/Lab2/flask_app/app/__pycache__/
