@@ -1,11 +1,10 @@
 from flask import Flask, render_template, redirect
-from os.path import dirname, join
 from flask_pymongo import PyMongo
+from os.path import dirname, join
 from dotenv import get_key
 import subprocess
 
 dotenv_path = join(dirname(__file__), '..', '.env')
-
 
 app = Flask(__name__)
 app.config['MONGO_URI'] = get_key(dotenv_path, 'MONGO_URI')
@@ -15,6 +14,7 @@ mongo = PyMongo(app)
 @app.route("/")
 def index():
     users = list(mongo.db.user.find())
+    users.sort(key=lambda user: user['rating'], reverse=True)
     return render_template('index.html', users=users)
 
 

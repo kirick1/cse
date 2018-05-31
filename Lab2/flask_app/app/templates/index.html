@@ -56,10 +56,7 @@
             var usersData = [];
             var messageCounters = document.getElementsByClassName('badge badge-success');
             var ratingCounters = document.getElementsByClassName('badge badge-warning');
-            var messageCountersLength = messageCounters.length;
-            for (var i = 0; i < messageCountersLength; i++) usersData.push({ rating: parseInt(ratingCounters[i].innerText), messages: parseInt(messageCounters[i].innerText) });
-            usersData = usersData.sort(compare);
-            console.log(usersData);
+            for (var i = messageCounters.length - 1; i >= 0; i--) usersData.push({ rating: parseInt(ratingCounters[i].innerText), messages: parseInt(messageCounters[i].innerText) })
             var config = {
                 type: 'line',
                 data: { labels: getUsersRatingFromData(usersData), datasets: [{ label: 'Messages', data: getUsersMessagesFromData(usersData) }] },
