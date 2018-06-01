@@ -1,11 +1,21 @@
 from flask import Flask, render_template, redirect
 from flask_pymongo import PyMongo
+from flask_caching import Cache
 from settings import MONGO_URI
 import subprocess
 
 app = Flask(__name__)
 app.config['MONGO_URI'] = MONGO_URI
 mongo = PyMongo(app)
+cache = Cache(app, config={'CACHE_TYPE': 'simple'})
+
+cache.set(mongo.db.user.find().sort('rating', -1), 'all_users')
+
+
+@cache.cached(timeout=50, key_prefix='all_users')
+def get_all_users():
+    users = mongo.db.user.find().sort('rating', -1)
+    return [user.user_name for user in users]
 
 
 @app.route("/")
