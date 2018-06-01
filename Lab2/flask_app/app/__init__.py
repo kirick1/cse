@@ -9,12 +9,11 @@ app.config['MONGO_URI'] = MONGO_URI
 mongo = PyMongo(app)
 cache = Cache(app, config={'CACHE_TYPE': 'simple'})
 
-cache.set(mongo.db.user.find().sort('rating', -1), 'all_users')
-
 
 @cache.cached(timeout=50, key_prefix='all_users')
 def get_all_users():
     users = mongo.db.user.find().sort('rating', -1)
+    cache.set(users, 'all_users')
     return [user.user_name for user in users]
 
 
