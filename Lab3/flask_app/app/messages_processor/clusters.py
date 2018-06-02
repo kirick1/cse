@@ -2,6 +2,7 @@ from sklearn.cluster import KMeans
 
 
 def get_clusters(vectors, vectorizer):
+    print('Getting clusters ...')
     clusters = 7
     model = KMeans(n_clusters=clusters)
     model.fit(vectors)

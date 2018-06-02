@@ -27,7 +27,7 @@
     </nav>
     <div class="d-flex justify-content-center align-items-center ml-5 mr-5"><canvas id="users-chart"></canvas></div>
     <div class="container pl-5 pr-5 mb-5" id="users-list-element">
-        <div class="loader m-auto"></div>
+        <div class="loader m-auto" title="Loading users list ..."></div>
     </div>
     <script id="users-list-element-template" type="text/x-handlebars-template">
         <div class="list-group">
@@ -45,6 +45,27 @@
                 </a>
             {{/each}}
         </div>
+    </script>
+    <div class="container pl-5 pr-5 mb-5" id="users-tag-cloud-element">
+        <button class="btn btn-primary" onclick="getUsersTagCloud()" title="Click to get users tag cloud">Tag Cloud</button>
+    </div>
+    <script id="users-tag-cloud-element-template" type="text/x-handlebars-template">
+        {{tag_cloud}}
+    </script>
+    <div id="users-list-pagination-element" class="d-flex justify-content-center align-items-center flex-row w-100 mt-3 mb-3" title="Users list navigation"></div>
+    <script id="users-list-pagination-element-template" type="text/x-handlebars-template">
+        <nav aria-label="Users list navigation">
+            <ul class="pagination pagination-sm">
+                {{#each pages}}
+                    {{#if current}}
+                    <li class="page-item disabled"><a class="page-link" href="{{link}}" tabindex="-1" title="Current page">{{number}}</a></li>
+                    {{/if}}
+                    {{#unless current}}
+                    <li class="page-item"><a class="page-link" href="{{link}}" tabindex="-1" title="Click to go this page">{{number}}</a></li>
+                    {{/unless}}
+                {{/each}}
+            </ul>
+        </nav>
     </script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous" type="text/javascript"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous" type="text/javascript"></script>
@@ -65,33 +86,51 @@
             users.forEach(user => rating.push(user.rating));
             return rating;
         }
+        function getPages (users) {
+            const usersNumber = users.length;
+            const pagesNumber = Math.ceil(usersNumber / 100);
+            let pages = [];
+            for (let i = 1; i <= pagesNumber; i++) {
+                pages.push({
+                    number: i,
+                    link: '/users/page/' + i,
+                    current: (i === parseInt(window.location.pathname.split('/page/')[1]))
+                })
+            }
+            return pages
+        }
         function renderChart () {
             const ctx = document.getElementById('users-chart');
             let usersData = [];
             const messageCounters = document.getElementsByClassName('badge badge-success');
             const ratingCounters = document.getElementsByClassName('badge badge-warning');
             for (let i = messageCounters.length - 1; i >= 0; i--) usersData.push({ rating: parseInt(ratingCounters[i].innerText), messages: parseInt(messageCounters[i].innerText) })
-            const config = {
-                type: 'line',
-                data: { labels: getUsersRatingFromData(usersData), datasets: [{ label: 'Messages', data: getUsersMessagesFromData(usersData) }] },
-                options: {
-                    responsive: true,
-                    title: { display: true, text: 'Users rating and messages count' },
-                    tooltips: { mode: 'index', intersect: false },
-                    hover: { mode: 'nearest', intersect: true },
-                    scales: { xAxes: [{ display: true, scaleLabel: { display: true, labelString: 'Rating' } }],  yAxes: [{ display: true, scaleLabel: { display: true, labelString: 'Messages' } }] }
-                }
-            };
+            const config = { type: 'line', data: { labels: getUsersRatingFromData(usersData), datasets: [{ label: 'Messages', data: getUsersMessagesFromData(usersData) }] }, options: { responsive: true, title: { display: true, text: 'Users rating and messages count' }, tooltips: { mode: 'index', intersect: false }, hover: { mode: 'nearest', intersect: true }, scales: { xAxes: [{ display: true, scaleLabel: { display: true, labelString: 'Rating' } }],  yAxes: [{ display: true, scaleLabel: { display: true, labelString: 'Messages' } }] } } };
             const usersChart = new Chart(ctx, config);
+            return (usersChart !== undefined)
         }
         function getUsers () {
-            axios.get('/api/users')
+            axios.get('/api/users/page/' + window.location.pathname.split('/page/')[1])
                 .then(response => {
                     if (response.status === 200) {
-                        const users = Array.from(response.data);
-                        console.log(users);
-                        fillTemplate('users-list-element', 'users-list-element-template', { users: users });
+                        fillTemplate('users-list-element', 'users-list-element-template', { users: response.data });
                         renderChart();
+                        axios.get('/api/users')
+                            .then(res => {
+                                if (res.status === 200) {
+                                    fillTemplate('users-list-pagination-element', 'users-list-pagination-element-template', { pages: getPages(res.data) });
+                                }
+                            }).catch(error => console.log(error))
+                    }
+                }).catch(error => console.log(error))
+        }
+        function getUsersTagCloud () {
+            axios.get('/api/users/tagcloud')
+                .then(response => {
+                    if (response.status === 200) {
+                        const tagCloud = response.data;
+                        console.log(tagCloud);
+                        fillTemplate('users-tag-cloud-element', 'users-tag-cloud-element-template', { tag_cloud: tagCloud });
                     }
                 }).catch(error => console.log(error))
         }
