@@ -86,17 +86,9 @@
             users.forEach(user => rating.push(user.rating));
             return rating;
         }
-        function getPages (users) {
-            const usersNumber = users.length;
-            const pagesNumber = Math.ceil(usersNumber / 100);
+        function getPagination (pagesNumber) {
             let pages = [];
-            for (let i = 1; i <= pagesNumber; i++) {
-                pages.push({
-                    number: i,
-                    link: '/users/page/' + i,
-                    current: (i === parseInt(window.location.pathname.split('/page/')[1]))
-                })
-            }
+            for (let i = 1; i <= pagesNumber; i++) pages.push({ number: i, link: '/users/page/' + i, current: (i === parseInt(window.location.pathname.split('/page/')[1])) })
             return pages
         }
         function renderChart () {
@@ -115,10 +107,10 @@
                     if (response.status === 200) {
                         fillTemplate('users-list-element', 'users-list-element-template', { users: response.data });
                         renderChart();
-                        axios.get('/api/users')
+                        axios.get('/api/pagination')
                             .then(res => {
                                 if (res.status === 200) {
-                                    fillTemplate('users-list-pagination-element', 'users-list-pagination-element-template', { pages: getPages(res.data) });
+                                    fillTemplate('users-list-pagination-element', 'users-list-pagination-element-template', { pages: getPagination(res.data.pages_number) });
                                 }
                             }).catch(error => console.log(error))
                     }
