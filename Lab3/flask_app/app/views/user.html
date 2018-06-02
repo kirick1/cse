@@ -36,6 +36,12 @@
             </ul>
         </div>
     </script>
+    <div class="container pl-5 pr-5 mb-5" id="user-tag-cloud-element">
+        <button class="btn btn-primary" onclick="getUserTagCloud()" title="Click to get user tag cloud">Tag Cloud</button>
+    </div>
+    <script id="user-tag-cloud-element-template" type="text/x-handlebars-template">
+        {{tag_cloud}}
+    </script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous" type="text/javascript"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous" type="text/javascript"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous" type="text/javascript"></script>
@@ -50,6 +56,16 @@
                 .then(response => {
                     if (response.status === 200) {
                         fillTemplate('user-element', 'user-element-template', { user_name: response.data.user_name, rating: response.data.rating, rang: response.data.rang, avatar: response.data.avatar, messages: response.data.messages });
+                    }
+                }).catch(error => console.log(error))
+        }
+        function getUserTagCloud () {
+            axios.get('/api/tagcloud' + window.location.pathname)
+                .then(response => {
+                    if (response.status === 200) {
+                        const tagCloud = response.data;
+                        console.log(tagCloud);
+                        fillTemplate('user-tag-cloud-element', 'user-tag-cloud-element-template', { tag_cloud: tagCloud });
                     }
                 }).catch(error => console.log(error))
         }

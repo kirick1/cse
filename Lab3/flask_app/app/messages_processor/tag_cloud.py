@@ -1,8 +1,5 @@
-# from flask_app.app.messages_processor.clusters import get_clusters
 from clusters import get_clusters
-# from flask_app.app.messages_processor.tokenizer import create_stemmer, create_stop_words, process_messages
 from tokenizer import create_stemmer, create_stop_words, process_messages
-# from flask_app.app.messages_processor.vectorizer import create_vectorizer, vectorize
 from vectorizer import create_vectorizer, vectorize
 
 

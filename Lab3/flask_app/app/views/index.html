@@ -125,7 +125,7 @@
                 }).catch(error => console.log(error))
         }
         function getUsersTagCloud () {
-            axios.get('/api/users/tagcloud')
+            axios.get('/api/tagcloud/pages/' + window.location.pathname.split('/page/')[1])
                 .then(response => {
                     if (response.status === 200) {
                         const tagCloud = response.data;

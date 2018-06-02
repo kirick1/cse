@@ -102,9 +102,36 @@ def get_user(user_name):
     return response
 
 
-@app.route("/api/users/tagcloud")
+@app.route("/api/tagcloud")
 def get_tag_cloud():
     users = get_all_users()
+    tag_cloud = get_cloud(users)
+    response = app.response_class(
+        response=json.dumps(tag_cloud, ensure_ascii=False),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
+
+
+@app.route("/api/tagcloud/pages/<page_number>")
+def get_tag_cloud_by_page(page_number):
+    skip = 100 * (int(page_number) - 1)
+    users = get_users(skip=skip)
+    tag_cloud = get_cloud(users)
+    response = app.response_class(
+        response=json.dumps(tag_cloud, ensure_ascii=False),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
+
+
+@app.route("/api/tagcloud/users/<user_name>")
+def get_tag_cloud_by_user(user_name):
+    user = mongo.db.user.find_one_or_404({'user_name': user_name})
+    parsed = parse_user(user)
+    users = [parsed]
     tag_cloud = get_cloud(users)
     response = app.response_class(
         response=json.dumps(tag_cloud, ensure_ascii=False),
