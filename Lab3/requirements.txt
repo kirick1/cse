@@ -1,6 +1,6 @@
-nltk
 Flask
 Flask-PyMongo
 Scrapy
 PyMongo
-Python-Dotenv
+nltk
+sklearn

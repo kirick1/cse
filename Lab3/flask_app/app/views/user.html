@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <meta charset="utf-8">
+      <title>Forum parser</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous" type="text/css" />
+      <style>@font-face{font-family:Oswald;font-style:normal;font-weight:400;src:local('Oswald Regular'),local('Oswald-Regular'),url(https://fonts.gstatic.com/s/oswald/v16/TK3iWkUHHAIjg752HT8Ghe4.woff2) format('woff2');unicode-range:U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}@font-face{font-family:Oswald;font-style:normal;font-weight:400;src:local('Oswald Regular'),local('Oswald-Regular'),url(https://fonts.gstatic.com/s/oswald/v16/TK3iWkUHHAIjg752Fj8Ghe4.woff2) format('woff2');unicode-range:U+0102-0103,U+0110-0111,U+1EA0-1EF9,U+20AB}@font-face{font-family:Oswald;font-style:normal;font-weight:400;src:local('Oswald Regular'),local('Oswald-Regular'),url(https://fonts.gstatic.com/s/oswald/v16/TK3iWkUHHAIjg752Fz8Ghe4.woff2) format('woff2');unicode-range:U+0100-024F,U+0259,U+1E00-1EFF,U+2020,U+20A0-20AB,U+20AD-20CF,U+2113,U+2C60-2C7F,U+A720-A7FF}@font-face{font-family:Oswald;font-style:normal;font-weight:400;src:local('Oswald Regular'),local('Oswald-Regular'),url(https://fonts.gstatic.com/s/oswald/v16/TK3iWkUHHAIjg752GT8G.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}@font-face{font-family:Oswald;font-style:normal;font-weight:500;src:local('Oswald Medium'),local('Oswald-Medium'),url(https://fonts.gstatic.com/s/oswald/v16/TK3hWkUHHAIjg75-6hwTvs9CE5Q.woff2) format('woff2');unicode-range:U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}@font-face{font-family:Oswald;font-style:normal;font-weight:500;src:local('Oswald Medium'),local('Oswald-Medium'),url(https://fonts.gstatic.com/s/oswald/v16/TK3hWkUHHAIjg75-6hwTtc9CE5Q.woff2) format('woff2');unicode-range:U+0102-0103,U+0110-0111,U+1EA0-1EF9,U+20AB}@font-face{font-family:Oswald;font-style:normal;font-weight:500;src:local('Oswald Medium'),local('Oswald-Medium'),url(https://fonts.gstatic.com/s/oswald/v16/TK3hWkUHHAIjg75-6hwTtM9CE5Q.woff2) format('woff2');unicode-range:U+0100-024F,U+0259,U+1E00-1EFF,U+2020,U+20A0-20AB,U+20AD-20CF,U+2113,U+2C60-2C7F,U+A720-A7FF}@font-face{font-family:Oswald;font-style:normal;font-weight:500;src:local('Oswald Medium'),local('Oswald-Medium'),url(https://fonts.gstatic.com/s/oswald/v16/TK3hWkUHHAIjg75-6hwTus9C.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}@font-face{font-family:Oswald;font-style:normal;font-weight:700;src:local('Oswald Bold'),local('Oswald-Bold'),url(https://fonts.gstatic.com/s/oswald/v16/TK3hWkUHHAIjg75-ohoTvs9CE5Q.woff2) format('woff2');unicode-range:U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}@font-face{font-family:Oswald;font-style:normal;font-weight:700;src:local('Oswald Bold'),local('Oswald-Bold'),url(https://fonts.gstatic.com/s/oswald/v16/TK3hWkUHHAIjg75-ohoTtc9CE5Q.woff2) format('woff2');unicode-range:U+0102-0103,U+0110-0111,U+1EA0-1EF9,U+20AB}@font-face{font-family:Oswald;font-style:normal;font-weight:700;src:local('Oswald Bold'),local('Oswald-Bold'),url(https://fonts.gstatic.com/s/oswald/v16/TK3hWkUHHAIjg75-ohoTtM9CE5Q.woff2) format('woff2');unicode-range:U+0100-024F,U+0259,U+1E00-1EFF,U+2020,U+20A0-20AB,U+20AD-20CF,U+2113,U+2C60-2C7F,U+A720-A7FF}@font-face{font-family:Oswald;font-style:normal;font-weight:700;src:local('Oswald Bold'),local('Oswald-Bold'),url(https://fonts.gstatic.com/s/oswald/v16/TK3hWkUHHAIjg75-ohoTus9C.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}@font-face{font-family:Raleway;font-style:normal;font-weight:300;src:local('Raleway Light'),local('Raleway-Light'),url(https://fonts.gstatic.com/s/raleway/v12/1Ptrg8zYS_SKggPNwIYqWqhPAMif.woff2) format('woff2');unicode-range:U+0100-024F,U+0259,U+1E00-1EFF,U+2020,U+20A0-20AB,U+20AD-20CF,U+2113,U+2C60-2C7F,U+A720-A7FF}@font-face{font-family:Raleway;font-style:normal;font-weight:300;src:local('Raleway Light'),local('Raleway-Light'),url(https://fonts.gstatic.com/s/raleway/v12/1Ptrg8zYS_SKggPNwIYqWqZPAA.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}@font-face{font-family:Raleway;font-style:normal;font-weight:400;src:local('Raleway'),local('Raleway-Regular'),url(https://fonts.gstatic.com/s/raleway/v12/1Ptug8zYS_SKggPNyCMIT5lu.woff2) format('woff2');unicode-range:U+0100-024F,U+0259,U+1E00-1EFF,U+2020,U+20A0-20AB,U+20AD-20CF,U+2113,U+2C60-2C7F,U+A720-A7FF}@font-face{font-family:Raleway;font-style:normal;font-weight:400;src:local('Raleway'),local('Raleway-Regular'),url(https://fonts.gstatic.com/s/raleway/v12/1Ptug8zYS_SKggPNyC0ITw.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}body,html{height:100%}a,a:hover{outline:0;text-decoration:none;color:#000}h1,h2,h3,h4,h5{font-family:Oswald,Oswald,sans-serif}p{font-family:Raleway,Raleway,sans-serif;margin:0;font-size:20px}.loader{border:16px solid #f3f3f3;border-top:16px solid #3498db;border-radius:50%;width:120px;height:120px;animation:spin 2s linear infinite}@keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}</style>
+      <script type="text/javascript" src="https://unpkg.com/axios/dist/axios.min.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
+  </head>
+  <body>
+    <nav class="d-flex justify-content-around align-items-center flex-row w-100 mt-3 mb-3">
+        <a class="h1 nav-item" href="/" title="Users list">Users</a>
+    </nav>
+    <div class="container pl-5 pr-5" id="user-element">
+        <div class="loader m-auto"></div>
+    </div>
+    <script id="user-element-template" type="text/x-handlebars-template">
+        <div class="container mb-5">
+            <div class="card ml-5 mr-5">
+                <img class="card img-top" src="{{avatar}}" alt="User photo" title="User photo" />
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center w-100">
+                        <h5 class="card-title" title="Username">{{user_name}}</h5>
+                        <span class="badge badge-primary" title="User rating">{{rating}}</span>
+                    </div>
+                    <small title="User rang">{{rang}}</small>
+                </div>
+            </div>
+            <br />
+            <ul class="list-group ml-5 mr-5" id="user-messages-list">
+                {{#each messages}}
+                    <li class="list-group-item mt-1">{{this}}</li>
+                {{/each}}
+            </ul>
+        </div>
+    </script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous" type="text/javascript"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous" type="text/javascript"></script>
+    <script type="text/javascript">
+        function fillTemplate (elementId, templateElementId, context) {
+            const source = document.getElementById(templateElementId).innerHTML;
+            const template = Handlebars.compile(source);
+            document.getElementById(elementId).innerHTML = template(context);
+        }
+        function getUserInfo () {
+            axios.get('/api' + window.location.pathname)
+                .then(response => {
+                    if (response.status === 200) {
+                        const user = response.data;
+                        console.log(user);
+                        fillTemplate('user-element', 'user-element-template', { user_name: user.user_name, rating: user.rating, rang: user.rang, avatar: user.avatar, messages: user.messages });
+                    }
+                }).catch(error => console.log(error))
+        }
+        window.onload = () => {
+            getUserInfo();
+        }
+    </script>
+  </body>
+</html>

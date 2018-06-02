@@ -1,4 +1,4 @@
-from settings import MONGO_URI
+from settings import MONGO_URI, MONGO_DATABASE, ITEM_PIPELINES
 import scrapy
 import re
 
@@ -15,9 +15,7 @@ XPATH_RATING = '//div[@class="extraUserInfo"]/dl[3]/dd/span/text()'
 XPATH_USER_MESSAGES_COUNT = "//div[@class='extraUserInfo']/dl[2]/dd[1]/span/text()"
 XPATH_NEXT = '//div[@class="PageNav"]/nav/a[last()]/@href'
 USER_ID_REGEX = '.([0-9]+)/$'
-HEADERS = {
-    'User-Agent': "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.78 Safari/537.36"}
-
+HEADERS = {'User-Agent': "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.78 Safari/537.36"}
 name = "posts"
 base_url = 'http://avtoved.guru/forums/'
 
@@ -27,11 +25,9 @@ class ForumSpider(scrapy.Spider):
     start_urls = [base_url]
 
     custom_settings = {
-        'ITEM_PIPELINES': {
-            'flask_app.spider.pipelines.MongoPipeline': 300,
-        },
+        'ITEM_PIPELINES': ITEM_PIPELINES,
         'MONGO_URI': MONGO_URI,
-        'MONGO_DATABASE': 'python-lab-2'
+        'MONGO_DATABASE': MONGO_DATABASE
     }
 
     def parse(self, response):

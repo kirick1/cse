@@ -1,5 +1,4 @@
 Flask
 Flask-PyMongo
-Flask-Caching
 Scrapy
 PyMongo

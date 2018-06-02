@@ -1,6 +1,6 @@
-from flask_app.app.messages_procesor.clusters import get_clusters
-from flask_app.app.messages_procesor.tokenizer import create_stemmer, create_stop_words, process_messages
-from flask_app.app.messages_procesor.vectorizer import create_vectorizer, vectorize
+from flask_app.app.messages_processor.clusters import get_clusters
+from flask_app.app.messages_processor.tokenizer import create_stemmer, create_stop_words, process_messages
+from flask_app.app.messages_processor.vectorizer import create_vectorizer, vectorize
 
 
 def get_cloud(users):
