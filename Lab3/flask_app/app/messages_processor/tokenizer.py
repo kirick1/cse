@@ -23,4 +23,5 @@ def process_messages(messages, stemmer, stop_words):
         processed_message = [word for word in tokens if word.isalpha() and word not in stop_words]
         processed_message = [stemmer.stem(word) for word in processed_message]
         processed_messages.append(processed_message)
+
     return processed_messages

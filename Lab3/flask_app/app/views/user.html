@@ -29,7 +29,7 @@
                 </div>
             </div>
             <br />
-            <div class="pl-5 pr-5 text-center" id="user-tag-cloud-element"></div>
+            <div class="text-center" id="user-tag-cloud-element"></div>
             <br />
             <ul class="list-group ml-5 mr-5" id="user-messages-list">
                 {{#each messages}}
@@ -39,12 +39,12 @@
         </div>
     </script>
     <script id="user-tag-cloud-element-template" type="text/x-handlebars-template">
-        <canvas width="500" height="300" id="tag-cloud-canvas"></canvas>
+        <canvas width="700" height="400" id="tag-cloud-canvas"></canvas>
         <div id="tag-cloud-tags">
             <ul>
                 {{#each tags}}
                     <li>
-                        <a href="#">{{word}}</a>
+                        <a href="#" style="font-size: {{size}}px">{{tag}}</a>
                     </li>
                 {{/each}}
             </ul>
@@ -68,11 +68,23 @@
                     }
                 }).catch(error => console.log(error))
         }
+        function getTagsReady (tags) {
+            const readyTags = [];
+            const tagsNumber = tags.length;
+            for (let i = 0; i < tagsNumber; i++) {
+                readyTags.push({
+                    tag: tags[i],
+                    size: (10 + tagsNumber - i) / 3
+                });
+            }
+            return readyTags
+        }
         function getUserTagCloud () {
             axios.get('/api/tagcloud' + window.location.pathname)
                 .then(response => {
                     if (response.status === 200) {
-                        fillTemplate('user-tag-cloud-element', 'user-tag-cloud-element-template', { tags: response.data });
+                        console.log(response.data);
+                        fillTemplate('user-tag-cloud-element', 'user-tag-cloud-element-template', { tags: getTagsReady(response.data.values) });
                         try {
                             TagCanvas.Start('tag-cloud-canvas', 'tag-cloud-tags', {textColour: '#444', outlineColour: '#9D4712', textFont: '"Oswald Bold"', initial: [0.2, -0.1], decel: 0.98, reverse: true, wheelZoom: false, depth: 0.75, maxSpeed: 0.02, minSpeed: 0.01, weight: true});
                         } catch (e) {
