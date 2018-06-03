@@ -109,6 +109,7 @@ def get_tag_cloud_by_page(page_number):
 def get_tag_cloud_by_user(user_name):
     user = parse_user(mongo.db.user.find_one_or_404({'user_name': user_name}))
     tag_cloud = get_cloud([user])
+    print(tag_cloud)
     return app.response_class(response=json.dumps(tag_cloud, ensure_ascii=False), status=200, mimetype='application/json')
 
 
