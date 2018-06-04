@@ -46,12 +46,6 @@
             {{/each}}
         </div>
     </script>
-    <div class="container pl-5 pr-5 mb-5" id="users-tag-cloud-element">
-        <button class="btn btn-primary" onclick="getUsersTagCloud()" title="Click to get users tag cloud">Tag Cloud</button>
-    </div>
-    <script id="users-tag-cloud-element-template" type="text/x-handlebars-template">
-        {{tag_cloud}}
-    </script>
     <div id="users-list-pagination-element" class="d-flex justify-content-center align-items-center flex-row w-100 mt-3 mb-3" title="Users list navigation"></div>
     <script id="users-list-pagination-element-template" type="text/x-handlebars-template">
         <nav aria-label="Users list navigation">
@@ -113,16 +107,6 @@
                                     fillTemplate('users-list-pagination-element', 'users-list-pagination-element-template', { pages: getPagination(res.data.pages_number) });
                                 }
                             }).catch(error => console.log(error))
-                    }
-                }).catch(error => console.log(error))
-        }
-        function getUsersTagCloud () {
-            axios.get('/api/tagcloud/pages/' + window.location.pathname.split('/page/')[1])
-                .then(response => {
-                    if (response.status === 200) {
-                        const tagCloud = response.data;
-                        console.log(tagCloud);
-                        fillTemplate('users-tag-cloud-element', 'users-tag-cloud-element-template', { tag_cloud: tagCloud });
                     }
                 }).catch(error => console.log(error))
         }
